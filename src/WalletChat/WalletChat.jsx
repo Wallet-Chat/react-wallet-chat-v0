@@ -55,7 +55,7 @@ function WalletChatWidget({ widgetState }) {
             "data": widgetState,
             "target": "sign_in"
         }
-        iframe.contentWindow.postMessage(msg, process.env.REACT_APP_APP_URL); //targertOrigin should be a .env variable
+        iframe.contentWindow.postMessage(msg, url); //targertOrigin should be a .env variable
       } else {
     console.log("useEffect widgetState")
     setIsOpen(widgetState?.isOpen)
