@@ -65,7 +65,7 @@ function WalletChatWidget(_ref) {
       numUnread = _useState4[0],
       setNumUnread = _useState4[1];
 
-  var url = process.env.REACT_APP_APP_URL || "https://nf3.walletchat.fun";
+  var url = process.env.REACT_APP_APP_URL || "https://app.walletchat.fun";
   useEffect(function () {
     try {
       if (widgetState !== null && widgetState !== void 0 && widgetState.signature) {
@@ -82,7 +82,7 @@ function WalletChatWidget(_ref) {
           "data": widgetState,
           "target": "sign_in"
         };
-        iframe.contentWindow.postMessage(msg, "https://app.walletchat.fun");
+        iframe.contentWindow.postMessage(msg, process.env.REACT_APP_APP_URL);
       } else {
         console.log("useEffect widgetState");
         setIsOpen(widgetState === null || widgetState === void 0 ? void 0 : widgetState.isOpen);
