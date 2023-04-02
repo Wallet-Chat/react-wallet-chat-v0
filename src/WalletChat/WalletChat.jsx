@@ -20,7 +20,8 @@ function WalletChatWidget({ widgetState }) {
   const [chatAddr, setChatAddr] = useState(widgetState?.chatAddr)
   const [hideIframe, setHideIframe] = useState(false);
   const [numUnread, setNumUnread] = useState(0);
-  const widget_url = process.env.REACT_APP_APP_URL || "https://app.walletchat.fun" 
+  let url = process.env.REACT_APP_APP_URL || "https://app.walletchat.fun" 
+  const iframe_url = process.env.REACT_APP_APP_URL || "https://app.walletchat.fun" 
   
   useEffect(() => {
     try {
@@ -55,7 +56,7 @@ function WalletChatWidget({ widgetState }) {
             "data": widgetState,
             "target": "sign_in"
         }
-        iframe.contentWindow.postMessage(msg, widget_url); //targertOrigin should be a .env variable
+        iframe.contentWindow.postMessage(msg, iframe_url); //targertOrigin 
       } else {
     console.log("useEffect widgetState")
     setIsOpen(widgetState?.isOpen)
