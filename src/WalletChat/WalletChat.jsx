@@ -25,8 +25,20 @@ function WalletChatWidget({ widgetState }) {
   
   useEffect(() => {
     try {
-      if (widgetState?.signature) { 
-        console.log("useEffect signIn")
+      console.log("--- WidgetState Generic:", widgetState)
+
+      if (widgetState?.walletName) { 
+        console.log("^^^ useEffect walletName:", widgetState.walletName, widgetState.account)
+
+        let iframe = document.getElementById("wallet-chat-widget")
+        let msg = {
+          "data": widgetState,
+          "target": "connect_wallet"
+        }
+        
+        iframe.contentWindow.postMessage(msg, iframe_url); //targertOrigin
+      } else if (widgetState?.signature) { 
+        console.log("useEffect signIn!")
           const authSig = {
             sig: widgetState.signature,
             derivedVia: "web3.eth.personal.sign",
@@ -58,13 +70,13 @@ function WalletChatWidget({ widgetState }) {
         }
         iframe.contentWindow.postMessage(msg, iframe_url); //targertOrigin 
       } else {
-    console.log("useEffect widgetState")
-    setIsOpen(widgetState?.isOpen)
-    setChatAddr(widgetState?.chatAddr)
-    setHideIframe(true)
-    setTimeout(() => {
-      setHideIframe(false)
-    }, 100)
+        console.log("useEffect widgetState")
+        setIsOpen(widgetState?.isOpen)
+        setChatAddr(widgetState?.chatAddr)
+        setHideIframe(true)
+        setTimeout(() => {
+          setHideIframe(false)
+        }, 100)
       }
     } catch (error) {
       console.log('🚨widgetConnectError', error)
@@ -86,8 +98,8 @@ function WalletChatWidget({ widgetState }) {
   useEffect(() => {
     window.addEventListener("message", (e) => {
       var data = e.data;
-      console.log("RECEIVED message from CHILD TO PARENT");
-      console.log(data);
+      // console.log("RECEIVED message from CHILD TO PARENT");
+      // console.log(data);
       if(data["target"] == 'unread_cnt'){
         setNumUnread(data["data"]);
         setCookie("unreadMsgs", data["data"])

@@ -69,8 +69,18 @@ function WalletChatWidget(_ref) {
   var iframe_url = process.env.REACT_APP_APP_URL || "https://app.walletchat.fun";
   useEffect(function () {
     try {
-      if (widgetState !== null && widgetState !== void 0 && widgetState.signature) {
-        console.log("useEffect signIn");
+      console.log("--- WidgetState Generic:", widgetState);
+
+      if (widgetState !== null && widgetState !== void 0 && widgetState.walletName) {
+        console.log("^^^ useEffect walletName:", widgetState.walletName, widgetState.account);
+        var iframe = document.getElementById("wallet-chat-widget");
+        var msg = {
+          "data": widgetState,
+          "target": "connect_wallet"
+        };
+        iframe.contentWindow.postMessage(msg, iframe_url);
+      } else if (widgetState !== null && widgetState !== void 0 && widgetState.signature) {
+        console.log("useEffect signIn!");
         var authSig = {
           sig: widgetState.signature,
           derivedVia: "web3.eth.personal.sign",
@@ -78,12 +88,15 @@ function WalletChatWidget(_ref) {
           address: widgetState.address.toLocaleLowerCase()
         };
         console.log('✅[INFO][AuthSig]:', authSig);
-        var iframe = document.getElementById("wallet-chat-widget");
-        var msg = {
+
+        var _iframe = document.getElementById("wallet-chat-widget");
+
+        var _msg = {
           "data": widgetState,
           "target": "sign_in"
         };
-        iframe.contentWindow.postMessage(msg, iframe_url);
+
+        _iframe.contentWindow.postMessage(_msg, iframe_url);
       } else {
         console.log("useEffect widgetState");
         setIsOpen(widgetState === null || widgetState === void 0 ? void 0 : widgetState.isOpen);
@@ -114,8 +127,6 @@ function WalletChatWidget(_ref) {
   useEffect(function () {
     window.addEventListener("message", function (e) {
       var data = e.data;
-      console.log("RECEIVED message from CHILD TO PARENT");
-      console.log(data);
 
       if (data["target"] == 'unread_cnt') {
         setNumUnread(data["data"]);
